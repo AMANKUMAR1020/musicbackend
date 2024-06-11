@@ -119,34 +119,67 @@ const getTopSongs = async (req, res) => {
   };
   
 
+// const createSong = async (req, res) => {
+// 	const { id } = req.user;
+// 	const data = req.body;
+// 	const user = await User.findById(id);
+  
+// 	if (!user) {
+// 	  return res.status(404).json({ message: "User not found!" });
+// 	}
+
+// 	if(!data || !data.title || !data.songUrl){
+// 		return res.status(404).json({ message: "data field are required" });
+// 	}
+  
+// 	const newSong = await Song.create({ title: data.title, songUrl: data.songUrl, Artiste:user.name, userId:id});
+
+// 	if (newSong) {
+
+// 		user.songs.push(newSong._id);
+// 		await user.save();
+	
+// 		return res.status(200).json(newSong);
+	
+// 	} else {
+	
+// 		res.status(500).json({ message: "Failed to create new song!" });
+// 	}
+// }
+
 const createSong = async (req, res) => {
 	const { id } = req.user;
-	const data = req.body;
+	//const data = req.body;
+	const {title,coverImage, songUrl} = req.body
 	const user = await User.findById(id);
   
 	if (!user) {
 	  return res.status(404).json({ message: "User not found!" });
 	}
-
-	if(!data || !data.title || !data.songUrl){
-		return res.status(404).json({ message: "data field are required" });
+  
+	if (!coverImage || !title || !songUrl) {
+	  return res.status(400).json({ message: "Data fields are required" });
 	}
   
-	const newSong = await Song.create({ title: data.title, songUrl: data.songUrl, Artiste:user.name, userId:id});
+	const newSong = await Song.create({
+	  title: title,
+	  coverImage: coverImage,
+	  songUrl: songUrl,
+	  Artiste: user.name,
+	  userId: id,
+	});
 
 	if (newSong) {
-
-		user.songs.push(newSong._id);
-		await user.save();
-	
-		return res.status(200).json(newSong);
-	
+	  user.songs.push(newSong._id);
+	  await user.save();
+	  return res.status(200).json(newSong);
 	} else {
-	
-		res.status(500).json({ message: "Failed to create new song!" });
+	  return res.status(500).json({ message: "Failed to create new song!" });
 	}
-}
+  };
+
   
+
 
 const deleteSong = async (req, res) => {
 	const { id } = req.user;
