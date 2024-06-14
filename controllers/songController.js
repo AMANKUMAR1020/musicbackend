@@ -79,38 +79,190 @@ const getTopSongs = async (req, res) => {
 // 	}
 // };
 // kl
-  const likeSong = async (req, res) => {
+
+//   lwq
+//   const likeSong = async (req, res) => {
+// 	const { id } = req.user;
+// 	const songId  = req.params; // Destructure songId from req.body
+
+// 	console.log("id", id)
+// 	console.log("songId", songId)
+  
+// 	const user = await User.findById(id);
+// 	const song = await Song.findById(songId);
+	
+// 	if (!user) {
+// 		console.log("user not found")
+// 		return res.status(404).json({ message: "User not found!" });
+// 	}
+// 	if (!song) {
+// 		console.log("song not found")
+// 	  return res.status(404).json({ message: "Song not found!" });
+// 	}
+
+// 	try {
+// 	  const isLiked = song.likes.includes(id);
+  
+// 	  if (!isLiked) {
+// 		song.likes.push(id);
+// 		await song.save();
+  
+// 		user.favorites.push(songId);
+// 		await user.save();
+  
+// 		return res.status(200).json({ message: "You liked it" });
+// 	  } else {
+// 		song.likes.pull(id);
+// 		await song.save();
+  
+// 		user.favorites.pull(songId);
+// 		await user.save();
+  
+// 		return res.status(200).json({ message: "You disliked it" });
+// 	  }
+// 	} catch (error) {
+// 	  return res.status(500).json({ error: error.message });
+// 	}
+//   };
+//   qoiw
+
+// wewr
+// const likeSong = async (req, res) => {
+// 	const { id } = req.user;
+// 	const { songId } = req.params; // Destructure songId from req.params
+  
+// 	console.log("id", id);
+// 	console.log("songId", songId);
+  
+// 	const user = await User.findById(id);
+// 	const song = await Song.findById(songId);
+  
+// 	if (!user) {
+// 	  console.log("user not found");
+// 	  return res.status(404).json({ message: "User not found!" });
+// 	}
+// 	if (!song) {
+// 	  console.log("song not found");
+// 	  return res.status(404).json({ message: "Song not found!" });
+// 	}
+  
+// 	try {
+// 	  const isLiked = song.likes.includes(id);
+  
+// 	  if (!isLiked) {
+
+// 		Song.updateOne(
+// 		{ _id: songId },
+// 		{ $addToSet: { likes : id } }, 
+// 		(err) =>{
+// 			if(err) {console.error(err);} 
+// 			else {console.log("Likes array updated successfully");}
+// 		}
+// 	);
+// //		song.likes.push(id);
+// 		await song.save();
+  
+// 		User.updateOne(
+// 			{ _id: id },
+// 			{ $addToSet: { favorites : songId } }, 
+// 			(err) =>{
+// 			  if(err) {console.error(err);} 
+// 			  else	{console.log("Likes array updated successfully");}
+// 			}
+// 		)
+// //		user.favorites.push(songId);
+// 		await user.save();
+
+// 		console.log("like")
+// 		return res.status(200).json({ message: "You liked it" });
+
+// 	  } else {
+
+// 	try{
+// 		Song.findByIdAndUpdate(
+// 			songId,
+// 			{ $pull : { likes : id } },
+// 			{new : true}
+// 		);
+// 	}catch (error){
+// 		console.error(error);
+// 		return res.status(500).json({ error: error.message }) 
+// 	};
+
+// //		song.likes.pull(id);
+// 		await song.save();
+	
+// 	try{
+// 		User.findByIdAndUpdate(
+// 			id,
+// 			{ $pull : { favorites : songId } },
+// 			{new : true}
+// 		);
+// 	}catch (error){
+// 		console.error(error);
+// 		return res.status(500).json({ error: error.message }) 
+// 	};
+// //		user.favorites.pull(songId);
+// 		await user.save();
+
+// 		console.log("unlike")	
+// 		return res.status(200).json({ message: "You disliked it" });
+// 	  }
+// 	} catch (error) {
+// 	  return res.status(500).json({ error: error.message });
+// 	}
+//   };
+//   werwe
+
+const likeSong = async (req, res) => {
 	const { id } = req.user;
-	const { songId } = req.body; // Destructure songId from req.body
+	const { songId } = req.params; // Destructure songId from req.params
+  
+	console.log("id", id);
+	console.log("songId", songId);
+  
+	const user = await User.findById(id);
+	const song = await Song.findById(songId);
+  
+	if (!user) {
+	  console.log("user not found");
+	  return res.status(404).json({ message: "User not found!" });
+	}
+	if (!song) {
+	  console.log("song not found");
+	  return res.status(404).json({ message: "Song not found!" });
+	}
   
 	try {
-	  const user = await User.findById(id);
-	  if (!user) {
-		return res.status(404).json({ message: "User not found!" });
-	  }
-  
-	  const song = await Song.findById(songId);
-	  if (!song) {
-		return res.status(404).json({ message: "Song not found!" });
-	  }
-  
 	  const isLiked = song.likes.includes(id);
   
 	  if (!isLiked) {
-		song.likes.push(id);
-		await song.save();
+		await Song.updateOne(
+		  { _id: songId },
+		  { $addToSet: { likes: id } }
+		);
   
-		user.favorites.push(songId);
-		await user.save();
+		await User.updateOne(
+		  { _id: id },
+		  { $addToSet: { favorites: songId } }
+		);
   
+		console.log("like");
 		return res.status(200).json({ message: "You liked it" });
 	  } else {
-		song.likes.pull(id);
-		await song.save();
+		await Song.findByIdAndUpdate(
+		  songId,
+		  { $pull: { likes: id } },
+		  { new: true }
+		);
   
-		user.favorites.pull(songId);
-		await user.save();
+		await User.findByIdAndUpdate(
+		  id,
+		  { $pull: { favorites: songId } },
+		  { new: true }
+		);
   
+		console.log("unlike");
 		return res.status(200).json({ message: "You disliked it" });
 	  }
 	} catch (error) {
@@ -118,6 +270,12 @@ const getTopSongs = async (req, res) => {
 	}
   };
   
+
+
+
+
+
+
 
 // const createSong = async (req, res) => {
 // 	const { id } = req.user;

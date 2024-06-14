@@ -12,7 +12,7 @@ const router = express.Router();
 
 router.get("/", getSongs);
 router.get("/top", getTopSongs);
-router.patch("/like",verifyToken, likeSong);//click to like the song
+router.patch("/:songId",verifyToken, likeSong);//click to like the song
 router.post("/create",verifyToken,createSong);// there is also need to do some work >>>
 router.delete("/:songid",verifyToken,deleteSong);//pass the song id in it
 
