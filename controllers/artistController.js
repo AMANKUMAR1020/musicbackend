@@ -7,11 +7,13 @@ import Song from "../models/Song.js";
 const getArtistes = async (req, res) => {
 	const artistes = await Artiste.find();
 
+	const filter_artistes = artistes.filter((artiste) => artiste.isPrivate === false);
+
 	if (!artistes) {
 		res.status(400).json({ message: "Artistes not found!" });
 	}
 
-	res.status(200).json(artistes);
+	res.status(200).json(filter_artistes);
 };
 
 //@desc Get the top artistes
