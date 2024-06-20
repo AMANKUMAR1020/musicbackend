@@ -254,7 +254,7 @@ const editUser = async (req, res) => {
 	  const allSongs = await Song.find({ userId: id });
   
 		await allSongs.map((song) => {
-		  if (song.userId === id) {
+		  if (song.userId == id) {//(song.userId === id)
 			return Song.findOneAndUpdate(
 			  { _id: song._id },
 			  { Artiste: updatedName },
