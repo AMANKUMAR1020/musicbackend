@@ -4,7 +4,7 @@ import cors from "cors";
 import { connectDB } from "./config/dbConnection.js";
 import { songsRouter } from "./routes/songRoutes.js";
 import { userRouter } from "./routes/userRoutes.js";
-import { corsOptions } from "./config/corsOptions.js";
+//import { corsOptions } from "./config/corsOptions.js";
 //import { artisteRouter } from "./routes/artisteRoutes.js";
 import { playlistRouter } from "./routes/playlistRoutes.js";
 
@@ -12,7 +12,7 @@ dotenv.config();
 
 const app = express();
 app.use(express.json());
-app.use(cors(corsOptions));
+//app.use(cors(corsOptions));
 //app.use(cors());
 app.use((req, res, next) =>{
 	  res.setHeader('Access-Control-Allow-Origin','https://musicfrontend-zeta.vercel.app');
